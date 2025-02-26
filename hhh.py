@@ -1,13 +1,21 @@
 class Solution:
-    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        highrow = List.length
-        highcol = List[0].length
-        lowrow = 0
-        lowcol = 0
-        while lowrow < highrow && low < highcol:
-            midrow = (highrow - lowrow)/2 + lowrow
-            midcol = (highcol - lowcol)/2 + lowcol
-            if List[midrow][midcol] == target:
+    def searchMatrix(self, matrix, target) -> bool:
+        m = len(matrix)
+        m = len(matrix)
+        n = len(matrix[0])
+        row = 0
+        col = n - 1
+        while col >= 0:
+            if matrix[row][col] == target:
                 return True
-            elif 
+            elif matrix[row][col] > target:
+                col -= 1
+            else:
+                row += 1
+        return False
 
+
+matrix = [[2,5],[2,8],[7,9],[7,11],[9,11]]
+target = 7
+sol = Solution()
+print(sol.searchMatrix(matrix, target))
