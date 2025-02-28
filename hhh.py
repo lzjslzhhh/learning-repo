@@ -1,21 +1,58 @@
-class Solution:
-    def searchMatrix(self, matrix, target) -> bool:
-        m = len(matrix)
-        m = len(matrix)
-        n = len(matrix[0])
-        row = 0
-        col = n - 1
-        while col >= 0:
-            if matrix[row][col] == target:
-                return True
-            elif matrix[row][col] > target:
-                col -= 1
-            else:
-                row += 1
-        return False
+class Solution(object):
+    def spiralMatrixIII(self, rows, cols, rStart, cStart):
+        """
+        :type rows: int
+        :type cols: int
+        :type rStart: int
+        :type cStart: int
+        :rtype: List[List[int]]
+        """
+        ans=[]
+        lr=0
+        lc=0
+        hr=0
+        hc=1
+        cot=1
+        ans.append([rStart,cStart])
+        while True:
+            for i in range(lc+1,hc+1):
+                x=lr+rStart
+                y=i+cStart
+                if x>=0 and x <rows and y>=0 and y<cols:
+                    ans.append([x,y])
+                    cot+=1
+            if cot == rows * cols:
+                break
+            hr+=1
+            for i in range(lr+1,hr+1):
+                x=i+rStart
+                y=hc+cStart
+                if x>=0 and x <rows and y>=0 and y<cols:
+                    ans.append([x,y])
+                    cot+=1
+            if cot == rows * cols:
+                break
+            lc-=1
+            for i in range(hc-1,lc-1,-1):
+                x=hr+rStart
+                y=i+cStart
+                if x>=0 and x <rows and y>=0 and y<cols:
+                    ans.append([x,y])
+                    cot+=1
+            if cot==rows*cols:
+                break
+            lr-=1
+            for i in range(hr-1,lr-1,-1):
+                x=i+rStart
+                y=lc+cStart
+                if x>=0 and x <rows and y>=0 and y<cols:
+                    ans.append([x,y])
+                    cot+=1
+            if cot==rows*cols:
+                break
+            hc+=1
+        return ans
 
-
-matrix = [[2,5],[2,8],[7,9],[7,11],[9,11]]
-target = 7
 sol = Solution()
-print(sol.searchMatrix(matrix, target))
+n=3
+print(sol.spiralMatrixIII(5,6,1,4))
