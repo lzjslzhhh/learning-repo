@@ -1,58 +1,31 @@
 class Solution(object):
-    def spiralMatrixIII(self, rows, cols, rStart, cStart):
+    def removeDuplicates(self, nums):
         """
-        :type rows: int
-        :type cols: int
-        :type rStart: int
-        :type cStart: int
-        :rtype: List[List[int]]
+        :type nums: List[int]
+        :rtype: int
         """
-        ans=[]
-        lr=0
-        lc=0
-        hr=0
-        hc=1
-        cot=1
-        ans.append([rStart,cStart])
-        while True:
-            for i in range(lc+1,hc+1):
-                x=lr+rStart
-                y=i+cStart
-                if x>=0 and x <rows and y>=0 and y<cols:
-                    ans.append([x,y])
-                    cot+=1
-            if cot == rows * cols:
-                break
-            hr+=1
-            for i in range(lr+1,hr+1):
-                x=i+rStart
-                y=hc+cStart
-                if x>=0 and x <rows and y>=0 and y<cols:
-                    ans.append([x,y])
-                    cot+=1
-            if cot == rows * cols:
-                break
-            lc-=1
-            for i in range(hc-1,lc-1,-1):
-                x=hr+rStart
-                y=i+cStart
-                if x>=0 and x <rows and y>=0 and y<cols:
-                    ans.append([x,y])
-                    cot+=1
-            if cot==rows*cols:
-                break
-            lr-=1
-            for i in range(hr-1,lr-1,-1):
-                x=i+rStart
-                y=lc+cStart
-                if x>=0 and x <rows and y>=0 and y<cols:
-                    ans.append([x,y])
-                    cot+=1
-            if cot==rows*cols:
-                break
-            hc+=1
-        return ans
+        start=0
+        end=0
+        n=len(nums)
+        while end<len(nums):
+            if end>=2 and nums[end-2]==nums[end]:
+                start=end
+                num=nums[end]
+                while nums[end]==num:
+                    end+=1
+                    if nums[end - 2] == nums[end]:
+                        n-=1
+                nums[start]=nums[end]
+                start+=1
+                end+=1
+                while end<len(nums) and nums[start]<nums[end]:
+                    nums[start]=nums[end]
+                    start+=1
+                    end+=1
+                n-=1
+            end+=1
+        return n
 
 sol = Solution()
-n=3
-print(sol.spiralMatrixIII(5,6,1,4))
+nums=[1,1,1,2,2,3]
+print(sol.removeDuplicates(nums))
