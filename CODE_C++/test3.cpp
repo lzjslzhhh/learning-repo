@@ -3,51 +3,73 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <algorithm>
+#include <stack>
 using namespace std;
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 class Solution {
     public:
-        bool repeatedSubstringPattern(string s) {
-            string temp=s+s;
-            temp.erase(temp.begin());
-            temp.erase(temp.end()-1);
-            return kmp(temp,s);
-        }
-        bool kmp(const string a,const string b){
-            vector<int> next(b.size());
-            getNext(&next[0],b);
-            int j=-1;
-            for(int i=1;i<a.size();i++){
-                while(j>=0&&a[i]!=b[j+1]){
-                    j=next[j];
-                }
-                if(a[i]==b[j+1]){
-                    j++;
-                }
-                if(j==b.size()-1){
-                    return true;
+        ListNode* partition(ListNode* head, int x) {
+            ListNode *dummy=new ListNode();
+            dummy->next=head;
+            ListNode *slow=dummy;
+            ListNode *pre=dummy;
+            ListNode *cur=dummy->next;
+            if(cur->val<x) slow=dummy->next;
+            while(cur!=nullptr){
+                if(cur->val<x){
+                    ListNode *tmp=cur->next;
+                    cur->next=slow->next;
+                    slow->next=cur;
+                    cur=tmp;
+                    pre->next=cur;
+                }else{
+                    pre=cur;
+                    cur=cur->next;
                 }
             }
-            return false;
-        }
-        void getNext(int *next,const string s){
-            int j=-1;
-            next[0]=j;
-            for(int i=1;i<s.size();i++){
-                while(j>=0&&s[i]!=s[j+1]){
-                    j=next[j];
-                }
-                if(s[i]==s[j+1]){
-                    j++;
-                }
-                next[i]=j;
-            }
+            return dummy->next;
         }
     };
 
 int main(){
-    Solution sol;
-    string s="bb";
-    cout<<sol.repeatedSubstringPattern(s)<<endl;
+    Solution s;
+    ListNode *head=new ListNode(1);
+    head->next=new ListNode(4);
+    head->next->next=new ListNode(3);
+    head->next->next->next=new ListNode(2);
+    head->next->next->next->next=new ListNode(5);
+    head->next->next->next->next->next=new ListNode(2);
+    ListNode *res=s.partition(head,3);
+    while(res!=nullptr){
+        cout<<res->val<<" ";
+        res=res->next;
+    }
     return 0;
 }
