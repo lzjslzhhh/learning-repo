@@ -35,41 +35,55 @@ struct ListNode {
  */
 class Solution {
     public:
-        ListNode* partition(ListNode* head, int x) {
-            ListNode *dummy=new ListNode();
-            dummy->next=head;
-            ListNode *slow=dummy;
-            ListNode *pre=dummy;
-            ListNode *cur=dummy->next;
-            if(cur->val<x) slow=dummy->next;
-            while(cur!=nullptr){
-                if(cur->val<x){
-                    ListNode *tmp=cur->next;
-                    cur->next=slow->next;
-                    slow->next=cur;
-                    cur=tmp;
-                    pre->next=cur;
-                }else{
-                    pre=cur;
-                    cur=cur->next;
+        bool isPalindrome(ListNode* head) {
+            ListNode *slow=head;
+            ListNode *fast=head;
+            ListNode *cur=new ListNode();
+            ListNode *cur1=new ListNode();
+            ListNode *cur2=new ListNode();
+            ListNode *pre=new ListNode();
+            //ListNode *tmp=new ListNode();
+            while(true){
+                if(fast==nullptr){
+                    cur2=slow;
+                    break;
+                }
+                if(fast->next==nullptr){
+                    cur2=slow->next;
+                    break;
+                }
+                //tmp=slow;
+                slow=slow->next;
+                fast=fast->next->next;
+            }
+            pre=nullptr;
+            cur=head;
+            while(cur!=slow){
+                ListNode *temp=cur->next;
+                cur->next=pre;
+                pre=cur;
+                cur=temp;
+            }
+            cur1=pre;
+            while(cur1&&cur2){
+                if(cur1->val!=cur2->val){
+                    return false;
                 }
             }
-            return dummy->next;
+            return true;
         }
     };
-
 int main(){
-    Solution s;
-    ListNode *head=new ListNode(1);
-    head->next=new ListNode(4);
-    head->next->next=new ListNode(3);
-    head->next->next->next=new ListNode(2);
-    head->next->next->next->next=new ListNode(5);
-    head->next->next->next->next->next=new ListNode(2);
-    ListNode *res=s.partition(head,3);
-    while(res!=nullptr){
-        cout<<res->val<<" ";
-        res=res->next;
-    }
-    return 0;
+Solution s;
+ListNode *head=new ListNode(1);
+ListNode *cur=head;
+cur->next=new ListNode(2);
+cur=cur->next;
+cur->next=new ListNode(2);
+cur=cur->next;
+cur->next=new ListNode(1);
+cout<<s.isPalindrome(head)<<endl;
+return 0;
+
+
 }
